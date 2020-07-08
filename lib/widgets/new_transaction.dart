@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
   final Function addTx;
 
+  NewTransaction(this.addTx);
+
+  @override
+  _NewTransactionState createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
+
   final amountController = TextEditingController();
 
-  NewTransaction(this.addTx);
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || enteredAmount == null) {
+      return print("title atau amount tidak valid");
+    }
+    widget.addTx(
+      enteredTitle,
+      enteredAmount,
+    );
+
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +42,15 @@ class NewTransaction extends StatelessWidget {
                 labelText: 'Title',
               ),
               controller: titleController,
+              onSubmitted: (_) => submitData,
             ),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Amount',
               ),
               controller: amountController,
+              keyboardType: TextInputType.number,
+              onSubmitted: (_) => submitData,
             ),
             FlatButton(
               child: Text(
@@ -35,13 +59,7 @@ class NewTransaction extends StatelessWidget {
                   color: Colors.red,
                 ),
               ),
-              onPressed: () {
-                if (titleController.text == '' || amountController.text == '') {
-                  return print('title dan amount harus diisi');
-                }
-                addTx(
-                    titleController.text, double.parse(amountController.text));
-              },
+              onPressed: submitData,
             ),
           ],
         ),

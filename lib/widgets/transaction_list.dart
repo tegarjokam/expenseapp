@@ -10,7 +10,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: 600,
       child: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Card(
@@ -25,7 +25,7 @@ class TransactionList extends StatelessWidget {
                     vertical: 20,
                   ),
                   child: Text(
-                    '\$ ${transactions[index].amount}',
+                    '\$ ${transactions[index].amount.toStringAsFixed(1)}',
                     style: TextStyle(
                         color: Colors.red[200],
                         fontSize: 20,
@@ -37,11 +37,7 @@ class TransactionList extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       transactions[index].title,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     Text(
                       DateFormat()
